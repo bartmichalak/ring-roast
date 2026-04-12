@@ -2,6 +2,8 @@
 
 **Expected time: 15 minutes**
 
+https://github.com/user-attachments/assets/d34f6129-8000-4a8f-851c-d941729bbe91
+
 ## What you'll learn about Open Wearables
 
 In this part of the workshop, you'll integrate your app with the Open Wearables platform. Instead of building separate integrations for Garmin, Whoop, Oura, Polar, Strava, and others - you'll use a single API to connect them all. This is what a unified API looks like in practice.
