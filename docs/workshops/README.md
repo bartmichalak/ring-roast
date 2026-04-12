@@ -2,7 +2,7 @@
 
 ## Open Wearables
 
-Each team will work with their own Open Wearables instance. All instances will be provisioned a few days before the hackathon. Access details (URLs, credentials) will be shared via Slack.
+Each team will work with their own Open Wearables instance hosted on Railway. All instances will be provisioned a few days before the hackathon. Access details (URLs, credentials) will be shared via Slack.
 
 ## Starter App
 
