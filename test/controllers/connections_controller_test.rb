@@ -3,7 +3,7 @@ require "test_helper"
 class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   test "index renders successfully" do
     fake = fake_client(
-      get_providers: [ { "provider" => "garmin", "name" => "Garmin", "icon_url" => "https://example.com/garmin.png" } ]
+      get_providers: [ { "provider" => "garmin", "name" => "Garmin", "icon_url" => "/icons/garmin.png" } ]
     )
     with_fake_client(fake) { get connections_path }
 
