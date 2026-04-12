@@ -8,7 +8,7 @@ class RoastsControllerTest < ActionDispatch::IntegrationTest
 
   test "renders successfully with workout data" do
     fake = fake_client(
-      get_connections: [{ "provider" => "garmin", "status" => "active" }],
+      get_connections: [ { "provider" => "garmin", "status" => "active" } ],
       get_workouts: [
         {
           "id" => "w1", "type" => "running", "name" => "Morning Run",
@@ -33,7 +33,7 @@ class RoastsControllerTest < ActionDispatch::IntegrationTest
 
   test "renders empty state when no workouts" do
     fake = fake_client(
-      get_connections: [{ "provider" => "garmin", "status" => "active" }],
+      get_connections: [ { "provider" => "garmin", "status" => "active" } ],
       get_workouts: []
     )
 
@@ -51,7 +51,7 @@ class RoastsControllerTest < ActionDispatch::IntegrationTest
     fake.define_singleton_method(:get_providers) { |**_| [] }
     fake.define_singleton_method(:create_user) { |**_| { "id" => "ow-uuid" } }
     fake.define_singleton_method(:authorize_provider) { |**_| { "authorization_url" => "https://example.com", "state" => "x" } }
-    fake.define_singleton_method(:get_connections) { |**_| [{ "provider" => "garmin" }] }
+    fake.define_singleton_method(:get_connections) { |**_| [ { "provider" => "garmin" } ] }
     fake.define_singleton_method(:get_workouts) { |**_| raise OpenWearablesClient::ApiError.new("fail", status: 500, body: {}) }
 
     with_fake_client(fake) do

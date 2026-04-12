@@ -3,7 +3,7 @@ require "test_helper"
 class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   test "index renders successfully" do
     fake = fake_client(
-      get_providers: [{ "provider" => "garmin", "name" => "Garmin", "icon_url" => "https://example.com/garmin.png" }]
+      get_providers: [ { "provider" => "garmin", "name" => "Garmin", "icon_url" => "https://example.com/garmin.png" } ]
     )
     with_fake_client(fake) { get connections_path }
 
@@ -54,7 +54,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
     fake = fake_client(
       create_user: { "id" => "ow-uuid" },
       authorize_provider: { "authorization_url" => "https://example.com/oauth", "state" => "x" },
-      get_connections: [{ "provider" => "garmin", "status" => "active" }]
+      get_connections: [ { "provider" => "garmin", "status" => "active" } ]
     )
 
     with_fake_client(fake) do

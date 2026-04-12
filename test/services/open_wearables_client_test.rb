@@ -13,7 +13,7 @@ class OpenWearablesClientTest < ActiveSupport::TestCase
   end
 
   test "get_providers returns parsed provider list" do
-    stub_execute([{ "provider" => "garmin", "name" => "Garmin" }]) do
+    stub_execute([ { "provider" => "garmin", "name" => "Garmin" } ]) do
       result = @client.get_providers
       assert_equal 1, result.size
       assert_equal "garmin", result.first["provider"]
@@ -28,7 +28,7 @@ class OpenWearablesClientTest < ActiveSupport::TestCase
   end
 
   test "get_connections returns connections array" do
-    stub_execute([{ "provider" => "garmin", "status" => "active" }]) do
+    stub_execute([ { "provider" => "garmin", "status" => "active" } ]) do
       result = @client.get_connections(user_id: "uuid-1")
       assert_equal 1, result.size
       assert_equal "active", result.first["status"]
@@ -37,7 +37,7 @@ class OpenWearablesClientTest < ActiveSupport::TestCase
 
   test "get_workouts returns all workouts from single page" do
     response = {
-      "data" => [{ "id" => "w1", "type" => "running" }],
+      "data" => [ { "id" => "w1", "type" => "running" } ],
       "pagination" => { "has_more" => false },
       "metadata" => {}
     }
@@ -53,9 +53,9 @@ class OpenWearablesClientTest < ActiveSupport::TestCase
     @client.define_singleton_method(:get) do |_path, _params = {}|
       call_count += 1
       if call_count == 1
-        { "data" => [{ "id" => "w1" }], "pagination" => { "has_more" => true, "next_cursor" => "cur1" }, "metadata" => {} }
+        { "data" => [ { "id" => "w1" } ], "pagination" => { "has_more" => true, "next_cursor" => "cur1" }, "metadata" => {} }
       else
-        { "data" => [{ "id" => "w2" }], "pagination" => { "has_more" => false }, "metadata" => {} }
+        { "data" => [ { "id" => "w2" } ], "pagination" => { "has_more" => false }, "metadata" => {} }
       end
     end
 
