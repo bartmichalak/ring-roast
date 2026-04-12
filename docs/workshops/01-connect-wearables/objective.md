@@ -1,5 +1,7 @@
 # Objective: Connect Wearables
 
+**Expected time: 15 minutes**
+
 ## What you'll learn about Open Wearables
 
 In this part of the workshop, you'll integrate your app with the Open Wearables platform. Instead of building separate integrations for Garmin, Whoop, Oura, Polar, Strava, and others - you'll use a single API to connect them all. This is what a unified API looks like in practice.
@@ -17,5 +19,9 @@ You'll go through five core steps:
 5. **Running the OAuth connect flow** - Initiate the authorization flow for a chosen provider, redirect the user to authenticate with their wearable account, and handle the callback to verify the connection was established.
 
 6. **Connecting Apple Health data** - Use the Open Wearables companion app to sync Apple Health data from your phone. ([Docs](https://openwearables.io/docs/app/introduction))
+
+## No wearable data? No problem
+
+If you don't have any data in your wearable (or don't own one), you can use the **seed data generator** in the Open Wearables dashboard to populate sample health data. This lets you test the full flow without needing a real device.
 
 By the end, you'll have a working integration where users can connect their wearable device in just a few clicks - without dealing with individual provider APIs, OAuth implementations, or data format differences.
