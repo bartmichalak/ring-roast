@@ -25,6 +25,7 @@ This app is a reference implementation showing three core integration patterns:
 ## Key Stack Choices
 
 - **Frontend**: Hotwire (Turbo + Stimulus) with ImportMap (no Node.js/bundler needed)
+- **CSS**: Tailwind CSS via `tailwindcss-rails`
 - **Asset pipeline**: Propshaft
 - **Background jobs**: Solid Queue (database-backed)
 - **Caching**: Solid Cache (database-backed)
@@ -66,5 +67,6 @@ bin/brakeman                         # Security scan
 - **Multiple SQLite databases in production**: Primary, cache (Solid Cache), queue (Solid Queue), and cable (Solid Cable) each have their own `.sqlite3` file in `storage/`.
 - **JS via ImportMap**: All JavaScript imports are configured in `config/importmap.rb`. No npm/yarn. Stimulus controllers auto-load from `app/javascript/controllers/`.
 - **Browser restriction**: `ApplicationController` enforces `allow_browser versions: :modern` (requires CSS nesting, import maps, etc.).
-- **No CSS framework** included yet.
+- **Tailwind CSS**: Styling uses Tailwind via `tailwindcss-rails`. Run `bin/dev` (not `rails s`) to start the Tailwind watcher alongside the server.
+- **Rails credentials for secrets**: Use `Rails.application.credentials` (edit via `bin/rails credentials:edit`) instead of ENV variables for API keys and configuration.
 - **Kamal deploy config** (`config/deploy.yml`) is a template - needs server IPs and registry credentials before use.

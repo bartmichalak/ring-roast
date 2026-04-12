@@ -41,6 +41,16 @@ For more details, see the [Open Wearables docs](https://openwearables.io/docs) a
 ./bin/dev      # Start dev server with Tailwind watcher (port 3000)
 ```
 
+### Credentials
+
+This app uses **Rails credentials** (not ENV variables) for secrets like API keys. Edit them with:
+
+```bash
+bin/rails credentials:edit
+```
+
+This requires `config/master.key` to be present locally (not committed to git).
+
 ## Deploying to Railway
 
 The app ships with a production-ready Dockerfile, so Railway can build and deploy it directly.
