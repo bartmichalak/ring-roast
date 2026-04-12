@@ -1,8 +1,8 @@
 # Objective: Workout Roast
 
-**Expected time: 20 minutes**
+**Expected time: 10 minutes**
 
-**Demo:** [Watch the outcome](../../videos/02-workout-roast.mp4)
+https://github.com/user-attachments/assets/6e109639-7616-4f12-b2a0-0c92deca574a
 
 ## What you'll learn about Open Wearables
 
