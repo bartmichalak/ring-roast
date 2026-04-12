@@ -22,6 +22,8 @@ You'll go through five core steps:
 
 6. **Connecting Apple Health data** - Use the Open Wearables companion app to sync Apple Health data from your phone. ([Docs](https://openwearables.io/docs/app/introduction))
 
+7. **Data coverage across providers** - Discussion on the differences in what data each wearable provider returns. Not all providers support the same data types - some have detailed sleep stages, others don't expose HRV, recovery scores vary wildly. We'll walk through the [provider coverage matrix](https://openwearables.io/docs/providers/coverage) to understand what to expect from each integration.
+
 ## No wearable data? No problem
 
 If you don't have any data in your wearable (or don't own one), you can use the **seed data generator** in the Open Wearables dashboard to populate sample health data. This lets you test the full flow without needing a real device.
