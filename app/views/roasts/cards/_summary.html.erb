@@ -1,8 +1,14 @@
 <div data-card-navigation-target="card"
      class="absolute inset-0 flex flex-col items-center justify-center p-8 text-white transition-all duration-500"
      style="background-color: <%= color %>">
-  <p class="text-lg uppercase tracking-widest opacity-70 mb-4">Last <%= stats[:period_days] %> Days</p>
-  <h2 class="text-8xl sm:text-9xl font-black mb-2"><%= stats[:total_count] %></h2>
-  <p class="text-3xl sm:text-4xl font-bold mb-8">workouts</p>
-  <p class="text-2xl opacity-80"><%= stats[:total_duration_formatted] %> of training</p>
+  <% if roast.present? %>
+    <p class="text-3xl sm:text-4xl font-black text-center max-w-2xl leading-snug mb-10">
+      "<%= roast %>"
+    </p>
+  <% end %>
+  <div class="opacity-70 text-center">
+    <p class="text-5xl font-black mb-1"><%= stats[:total_count] %></p>
+    <p class="text-lg">workouts in the last <%= stats[:period_days] %> days</p>
+    <p class="text-lg"><%= stats[:total_duration_formatted] %> of training</p>
+  </div>
 </div>

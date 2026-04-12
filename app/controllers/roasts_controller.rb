@@ -18,6 +18,7 @@ class RoastsController < ApplicationController
     )
 
     @stats = WorkoutStatsService.new(workouts).call
+    @roasts = RoastGeneratorService.new(@stats).call
     @colors = CardColorService.colors(count: 4)
   rescue OpenWearablesClient::ApiError => e
     Rails.logger.error("OW API error loading workouts: #{e.message}")

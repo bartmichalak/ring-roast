@@ -26,10 +26,10 @@
       <p class="text-xl opacity-80">Get moving and come back for your roast!</p>
     </div>
   <% else %>
-    <%= render "roasts/cards/summary", stats: @stats[:summary], color: @colors[0] %>
-    <%= render "roasts/cards/most_common_type", stats: @stats[:most_common_type], color: @colors[1] %>
-    <%= render "roasts/cards/longest_workout", stats: @stats[:longest_workout], color: @colors[2] %>
-    <%= render "roasts/cards/totals", stats: @stats[:totals], color: @colors[3] %>
+    <%= render "roasts/cards/summary", stats: @stats[:summary], roast: @roasts[:summary], color: @colors[0] %>
+    <%= render "roasts/cards/most_common_type", stats: @stats[:most_common_type], roast: @roasts[:most_common_type], color: @colors[1] %>
+    <%= render "roasts/cards/longest_workout", stats: @stats[:longest_workout], roast: @roasts[:longest_workout], color: @colors[2] %>
+    <%= render "roasts/cards/totals", stats: @stats[:totals], roast: @roasts[:totals], color: @colors[3] %>
   <% end %>
 
   <%# Navigation hint %>
