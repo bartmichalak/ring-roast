@@ -1,0 +1,39 @@
+<div data-controller="card-navigation"
+     data-card-navigation-index-value="0"
+     data-card-navigation-total-value="<%= @stats[:empty] ? 1 : 4 %>"
+     class="relative w-screen h-screen">
+
+  <%# Progress dots %>
+  <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex gap-2">
+    <% (@stats[:empty] ? 1 : 4).times do |i| %>
+      <div data-card-navigation-target="dot"
+           class="w-2.5 h-2.5 rounded-full bg-white/30 transition-all duration-300"></div>
+    <% end %>
+  </div>
+
+  <%# Close button %>
+  <%= link_to root_path, class: "fixed top-6 right-6 z-50 text-white/60 hover:text-white transition-colors" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  <% end %>
+
+  <% if @stats[:empty] %>
+    <div data-card-navigation-target="card"
+         class="absolute inset-0 flex flex-col items-center justify-center p-8 text-white transition-all duration-500"
+         style="background-color: <%= @colors[0] %>">
+      <h2 class="text-5xl sm:text-6xl font-black mb-4">No Workouts Yet</h2>
+      <p class="text-xl opacity-80">Get moving and come back for your roast!</p>
+    </div>
+  <% else %>
+    <%= render "roasts/cards/summary", stats: @stats[:summary], color: @colors[0] %>
+    <%= render "roasts/cards/most_common_type", stats: @stats[:most_common_type], color: @colors[1] %>
+    <%= render "roasts/cards/longest_workout", stats: @stats[:longest_workout], color: @colors[2] %>
+    <%= render "roasts/cards/totals", stats: @stats[:totals], color: @colors[3] %>
+  <% end %>
+
+  <%# Navigation hint %>
+  <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 text-white/40 text-sm">
+    Use arrow keys or swipe to navigate
+  </div>
+</div>

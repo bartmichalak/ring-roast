@@ -39,6 +39,30 @@ class OpenWearablesClient
     get("/#{API_VERSION}/users/#{user_id}/connections")
   end
 
+  # GET /api/v1/users/{user_id}/events/workouts
+  # Fetches all pages of workouts for the given date range.
+  def get_workouts(user_id:, start_date:, end_date:)
+    all_workouts = []
+    cursor = nil
+    max_pages = 10
+
+    max_pages.times do
+      params = { start_date: start_date, end_date: end_date, limit: 100 }
+      params[:cursor] = cursor if cursor
+
+      response = get("/#{API_VERSION}/users/#{user_id}/events/workouts", params)
+
+      all_workouts.concat(response["data"] || [])
+
+      pagination = response["pagination"] || {}
+      break unless pagination["has_more"]
+      cursor = pagination["next_cursor"]
+      break if cursor.nil?
+    end
+
+    all_workouts
+  end
+
   private
 
   def credentials

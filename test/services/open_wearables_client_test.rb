@@ -35,6 +35,35 @@ class OpenWearablesClientTest < ActiveSupport::TestCase
     end
   end
 
+  test "get_workouts returns all workouts from single page" do
+    response = {
+      "data" => [{ "id" => "w1", "type" => "running" }],
+      "pagination" => { "has_more" => false },
+      "metadata" => {}
+    }
+    stub_execute(response) do
+      result = @client.get_workouts(user_id: "uuid-1", start_date: "2026-03-01", end_date: "2026-03-31")
+      assert_equal 1, result.size
+      assert_equal "w1", result.first["id"]
+    end
+  end
+
+  test "get_workouts handles pagination" do
+    call_count = 0
+    @client.define_singleton_method(:get) do |_path, _params = {}|
+      call_count += 1
+      if call_count == 1
+        { "data" => [{ "id" => "w1" }], "pagination" => { "has_more" => true, "next_cursor" => "cur1" }, "metadata" => {} }
+      else
+        { "data" => [{ "id" => "w2" }], "pagination" => { "has_more" => false }, "metadata" => {} }
+      end
+    end
+
+    result = @client.get_workouts(user_id: "u1", start_date: "2026-03-01", end_date: "2026-03-31")
+    assert_equal 2, result.size
+    assert_equal 2, call_count
+  end
+
   test "raises ApiError on non-2xx response" do
     @client.define_singleton_method(:execute) do |_uri, _request|
       raise OpenWearablesClient::ApiError.new("API returned 401", status: 401, body: { "detail" => "Unauthorized" })
