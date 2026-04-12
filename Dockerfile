@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t roast_ring .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name roast_ring roast_ring
+# docker build -t open_wearables_demo_app .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name open_wearables_demo_app open_wearables_demo_app
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
@@ -59,11 +59,8 @@ FROM base
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /rails /rails
 
-# Run and own only the runtime files as a non-root user for security
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
-USER 1000:1000
+# Ensure runtime directories are writable
+RUN chmod -R a+w db log storage tmp
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
