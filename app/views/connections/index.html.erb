@@ -1,0 +1,32 @@
+<div class="min-h-screen flex flex-col items-center px-6 py-16 -mt-28">
+  <div class="mt-28 max-w-4xl w-full">
+    <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-white text-center mb-2">
+      Choose Your Wearable
+    </h1>
+    <p class="text-zinc-400 text-center mb-12">
+      Pick a provider to connect and prepare for your roast.
+    </p>
+
+    <% if @providers.any? %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @providers.each do |provider| %>
+          <%= link_to authorize_connections_path(provider: provider["provider"]),
+                class: "group bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-6 flex flex-col items-center gap-4 transition-all hover:shadow-lg hover:shadow-orange-500/10" do %>
+            <img src="<%= "#{Rails.application.credentials.open_wearables.api_url}#{provider["icon_url"]}" %>"
+                 alt="<%= provider["name"] %>"
+                 class="h-16 w-16 rounded-xl" />
+            <span class="text-white font-semibold text-lg group-hover:text-orange-400 transition-colors">
+              <%= provider["name"] %>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-zinc-500 text-center">No providers available at the moment.</p>
+    <% end %>
+
+    <div class="text-center mt-12">
+      <%= link_to "Back", root_path, class: "text-zinc-500 hover:text-zinc-300 transition-colors" %>
+    </div>
+  </div>
+</div>
