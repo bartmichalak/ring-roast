@@ -7,7 +7,7 @@ class RoastGeneratorService
   def call
     return {} if @stats[:empty]
 
-    client = @client || OpenAI::Client.new(access_token: Rails.application.credentials.openai.api_key)
+    client = @client || OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
 
     response = client.chat(
       parameters: {

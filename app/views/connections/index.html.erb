@@ -12,7 +12,7 @@
         <% @providers.each do |provider| %>
           <%= link_to authorize_connections_path(provider: provider["provider"]),
                 class: "group bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-6 flex flex-col items-center gap-4 transition-all hover:shadow-lg hover:shadow-orange-500/10" do %>
-            <img src="<%= "#{Rails.application.credentials.open_wearables&.api_url}#{provider["icon_url"]}" %>"
+            <img src="<%= "#{ENV["OPEN_WEARABLES_API_URL"]}#{provider["icon_url"]}" %>"
                  alt="<%= provider["name"] %>"
                  class="h-16 w-16 rounded-xl" />
             <span class="text-white font-semibold text-lg group-hover:text-orange-400 transition-colors">

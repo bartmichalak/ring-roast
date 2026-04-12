@@ -14,7 +14,7 @@ class OpenWearablesClient
     end
   end
 
-  def initialize(api_key: credentials.api_key, base_url: credentials.api_url)
+  def initialize(api_key: ENV.fetch("OPEN_WEARABLES_API_KEY"), base_url: ENV.fetch("OPEN_WEARABLES_API_URL"))
     @api_key = api_key
     @base_url = base_url
   end
@@ -64,10 +64,6 @@ class OpenWearablesClient
   end
 
   private
-
-  def credentials
-    Rails.application.credentials.open_wearables
-  end
 
   def get(path, params = {})
     uri = build_uri(path, params)
