@@ -2,6 +2,8 @@
 
 A Rails 8 web application that demonstrates how to integrate with the [Open Wearables](https://openwearables.io) platform - a unified API for connecting and syncing health data from multiple wearable devices.
 
+![Ring Roast landing page](docs/images/mainpage.png)
+
 - [Open Wearables Documentation](https://openwearables.io/docs)
 - [Open Wearables GitHub](https://github.com/the-momentum/open-wearables)
 
