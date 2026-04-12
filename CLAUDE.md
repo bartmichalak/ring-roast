@@ -36,7 +36,11 @@ This app is a reference implementation showing three core integration patterns:
 ## Common Commands
 
 ```bash
-# Setup & run
+# Setup & run (with Docker - no Ruby needed)
+cp .env.example .env                 # Then fill in your API keys
+docker compose up                    # Build & start dev server (port 3000)
+
+# Setup & run (local Ruby)
 ./bin/setup                          # Install deps, create DBs, start server
 ./bin/dev                            # Start dev server (port 3000)
 bin/jobs                             # Start background job processor
@@ -68,22 +72,5 @@ bin/brakeman                         # Security scan
 - **JS via ImportMap**: All JavaScript imports are configured in `config/importmap.rb`. No npm/yarn. Stimulus controllers auto-load from `app/javascript/controllers/`.
 - **Browser restriction**: `ApplicationController` enforces `allow_browser versions: :modern` (requires CSS nesting, import maps, etc.).
 - **Tailwind CSS**: Styling uses Tailwind via `tailwindcss-rails`. Run `bin/dev` (not `rails s`) to start the Tailwind watcher alongside the server.
-- **Rails credentials for secrets**: Use `Rails.application.credentials` instead of ENV variables for API keys and configuration. To edit credentials programmatically, create a script that writes to `$1` and pass it as `EDITOR`:
-  ```bash
-  # 1. Write a script that overwrites the temp file:
-  cat > /tmp/edit_creds.sh << 'SCRIPT'
-  #!/bin/bash
-  cat > "$1" << 'EOF'
-  secret_key_base: <existing_key>
-
-  open_wearables:
-    api_key: <your_key>
-    api_url: <your_url>
-  EOF
-  SCRIPT
-  chmod +x /tmp/edit_creds.sh
-
-  # 2. Run credentials:edit with the script as EDITOR:
-  EDITOR="/tmp/edit_creds.sh" bin/rails credentials:edit
-  ```
+- **Secrets via ENV variables**: API keys are configured through environment variables (`OPEN_WEARABLES_API_KEY`, `OPEN_WEARABLES_API_URL`, `OPENAI_API_KEY`). Copy `.env.example` to `.env` and fill in your values. Docker Compose loads `.env` automatically.
 - **Kamal deploy config** (`config/deploy.yml`) is a template - needs server IPs and registry credentials before use.

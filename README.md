@@ -36,20 +36,39 @@ For more details, see the [Open Wearables docs](https://openwearables.io/docs) a
 
 ## Getting started
 
+### Configuration
+
+Copy the example env file and fill in your API keys:
+
 ```bash
-./bin/setup    # Install deps, create DBs
+cp .env.example .env
+```
+
+| Variable | Description |
+|---|---|
+| `OPEN_WEARABLES_API_KEY` | Your [Open Wearables](https://openwearables.io/docs) API key |
+| `OPEN_WEARABLES_API_URL` | Open Wearables API base URL (e.g. `https://api.openwearables.io`) |
+| `OPENAI_API_KEY` | OpenAI API key (for AI roast generation) |
+
+### Option A: Docker (no Ruby required)
+
+All you need is [Docker](https://docs.docker.com/get-docker/).
+
+```bash
+cp .env.example .env       # fill in your API keys
+docker compose up           # build image, install gems, migrate DB, start server
+```
+
+The app will be available at **http://localhost:3100**. Gem changes in `Gemfile` are picked up automatically on the next `docker compose up`.
+
+### Option B: Local Ruby
+
+Requires Ruby 3.3.1 and SQLite3 installed on your machine.
+
+```bash
+./bin/setup    # Install deps, create DBs, start server
 ./bin/dev      # Start dev server with Tailwind watcher (port 3000)
 ```
-
-### Credentials
-
-This app uses **Rails credentials** (not ENV variables) for secrets like API keys. Edit them with:
-
-```bash
-bin/rails credentials:edit
-```
-
-This requires `config/master.key` to be present locally (not committed to git).
 
 ## Deploying to Railway
 
@@ -75,12 +94,9 @@ In the **Variables** tab, add:
 |---|---|
 | `RAILS_MASTER_KEY` | Contents of `config/master.key` |
 | `RAILS_ENV` | `production` |
-
-You can get your master key locally with:
-
-```bash
-cat config/master.key
-```
+| `OPEN_WEARABLES_API_KEY` | Your Open Wearables API key |
+| `OPEN_WEARABLES_API_URL` | Open Wearables API base URL |
+| `OPENAI_API_KEY` | Your OpenAI API key |
 
 ### 4. Configure the port
 

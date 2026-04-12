@@ -1,0 +1,19 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3100:3000"
+    volumes:
+      - .:/rails
+      - bundle:/usr/local/bundle
+    tty: true
+    stdin_open: true
+    env_file: .env
+    environment:
+      - RAILS_ENV=development
+      - BINDING=0.0.0.0
+
+volumes:
+  bundle:
