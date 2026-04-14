@@ -9,8 +9,9 @@ RUN apt-get update -qq && \
       libjemalloc2 libvips sqlite3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install foreman for Procfile.dev
-RUN gem install foreman
+# Install correct Bundler version (must match BUNDLED WITH in Gemfile.lock)
+RUN gem install bundler -v 2.7.1 && \
+    gem install foreman
 
 EXPOSE 3000
 
