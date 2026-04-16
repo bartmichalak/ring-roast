@@ -16,4 +16,4 @@ Integrate this project with [Open Wearables](https://openwearables.io/docs/dev-g
 
 ## Verify
 
-Run tests, then browser: connect → OAuth → callback → success flash + badge.
+Run tests. Then restart the app (`docker compose restart web` — needed for Rails to pick up the new `app/services/` directory) and test in browser: connect → OAuth → callback → success flash + badge.
