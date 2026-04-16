@@ -1,6 +1,6 @@
 # Prompt: Integrate with Open Wearables
 
-Integrate this project with [Open Wearables](https://openwearables.io) — a unified API for connecting wearable devices and accessing health data. API endpoints and response formats are in the CLAUDE.md quick reference. Full docs: https://openwearables.io/docs/dev-guides/backend-e2e-integration
+Integrate this project with [Open Wearables](https://openwearables.io/docs/dev-guides/backend-e2e-integration) — a unified API for connecting wearable devices and accessing health data. API endpoints and response formats are in the CLAUDE.md quick reference.
 
 ## What to build
 
