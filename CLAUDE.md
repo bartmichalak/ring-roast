@@ -63,23 +63,7 @@ bin/brakeman                         # Security scan
 - **Service objects for business logic**: Controllers should only handle calling services and rendering responses. All business logic belongs in service objects (`app/services/`).
 - **Services must have tests**: Every service must be covered by tests (`test/services/`).
 - **Testing without Mocha**: This project uses plain Minitest without Mocha. Use `define_singleton_method` for stubbing in tests. Do not use `any_instance.stubs` or `require "minitest/mock"` (not available).
-- **Open Wearables API**: See the quick reference below. Full docs: https://openwearables.io/docs/dev-guides/backend-e2e-integration
-
-## Open Wearables API Quick Reference
-
-Auth: `X-Open-Wearables-API-Key` header (NOT Bearer). Credentials: `ENV["OPEN_WEARABLES_API_URL"]`, `ENV["OPEN_WEARABLES_API_KEY"]`.
-
-| Method | Endpoint | Body/Params | Response |
-|--------|----------|-------------|----------|
-| POST | `/api/v1/users` | `{external_user_id: "..."}` | `{id: "uuid", external_user_id: "..."}` |
-| GET | `/api/v1/oauth/providers?enabled_only=true&cloud_only=true` | — | `[{provider: "garmin", name: "Garmin", icon_url: "/static/..."}]` |
-| GET | `/api/v1/oauth/{provider}/authorize?user_id=...&redirect_uri=...` | — | `{authorization_url: "https://..."}` |
-| GET | `/api/v1/users/{user_id}/connections` | — | `[{provider: "garmin", status: "active"}]` |
-| GET | `/api/v1/users/{user_id}/events/workouts?start_date=...&end_date=...&limit=100` | — | `{data: [...], pagination: {next_cursor, has_more}}` |
-
-**Workout fields**: `type`, `name` (nullable), `start_time`, `duration_seconds`, `calories_kcal` (nullable), `distance_meters` (nullable), `avg_heart_rate_bpm` (nullable).
-
-**Provider `icon_url`** is a relative path — prepend `OPEN_WEARABLES_API_URL` to render.
+- **Open Wearables API**: Docs at https://openwearables.io/docs/dev-guides/backend-e2e-integration. Auth: `X-Open-Wearables-API-Key` header (NOT Bearer). Credentials from ENV vars: `OPEN_WEARABLES_API_KEY`, `OPEN_WEARABLES_API_URL`.
 
 ## Architecture Notes
 
