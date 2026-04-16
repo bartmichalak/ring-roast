@@ -1,47 +1,32 @@
-# Workshop Prompt: Workout Roast Feature
+# Prompt: Workout Roast
 
-## Prompt
+Pull workout data from Open Wearables and display it as a Spotify Wrapped-style fullscreen card presentation.
 
-Build a Spotify Wrapped-style fullscreen card presentation showing workout stats from the last 30 days.
+## Workout data
 
-### Fetching workout data
+Add a method to fetch workouts from the Open Wearables API. The endpoint, response format, field names, and pagination pattern are documented in the "Retrieve Health Data" section:
+https://openwearables.io/docs/dev-guides/backend-e2e-integration
 
-Add a `get_workouts` method to the existing `OpenWearablesClient` service. It should call `GET /api/v1/users/{user_id}/events/workouts` with `start_date` and `end_date` params. The API returns paginated results (max 100 per page) - handle cursor-based pagination to fetch all workouts in the period.
+Fetch the last 30 days of workouts. Handle cursor-based pagination to get all results.
 
-### Workout stats
+## Stats cards
 
-Create a `WorkoutStatsService` that takes raw workout data and computes stats for 4 cards:
+Compute 4 stats from the raw workout data:
+- **Summary** — total workout count and total training time
+- **Most common type** — favorite workout type with count and percentage
+- **Longest session** — longest workout with name, duration, date
+- **Totals** — total calories, distance (km), average heart rate
 
-- **Summary** - total workout count and total training time (formatted like "12h 34m")
-- **Most common type** - the workout type they do most, with count and percentage
-- **Longest session** - their single longest workout with name, duration, date, and details
-- **Totals** - total calories burned, total distance in km, average heart rate
+Handle missing/null fields gracefully — not all workouts have every metric.
 
-The time period (30 days) should be a configurable constant. Handle missing data gracefully - some workouts may not have calories or distance.
+## Fullscreen presentation
 
-### Fullscreen card presentation
+Build a fullscreen page with bold, vibrant random background colors (Spotify Wrapped style). White text, large typography. Navigate with arrow keys, touch swipe, and Escape to close. Progress dots at top, close button.
 
-Create a new page at `/roast` with a dedicated fullscreen layout (no margins, no scrolling). Each card takes up the full screen with a bold, vibrant random background color (think Spotify Wrapped - bright pinks, blues, greens, oranges). White text, large typography.
+No workouts → "No Workouts Yet" card. No wearable connected → redirect to connections page.
 
-Users navigate between cards using:
-- Arrow keys (left/right)
-- Touch swipe on mobile
-- Escape key to close and return home
+Add a "See My Roast" button on the home page, visible only when a wearable is connected.
 
-Add progress dots at the top showing which card you're on, and a close (X) button.
+## Verify
 
-If the user has no workout data, show a single "No Workouts Yet" card.
-
-If the user hasn't connected a wearable yet, redirect them to `/connections`.
-
-### Landing page
-
-Add a "See My Roast" button on the home page, visible only when the user has connected a wearable.
-
-### Tests
-
-Write tests for the stats service (core business logic), the color service, and the roasts controller. Follow the existing test patterns in the project.
-
-### Verify
-
-Run `bin/rails test`, then start `bin/dev` and go through the full flow: home page -> "See My Roast" -> navigate through cards with arrow keys.
+Run tests, then test the full flow in a browser.

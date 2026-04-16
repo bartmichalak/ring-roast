@@ -1,27 +1,67 @@
-# Workshop Assumptions
+# Workshop: From Zero to Wearable Data in 60 Minutes
+
+## Prerequisites
+
+- **Docker** installed and running
+- **Claude Code** (or another AI coding agent)
+- Access to your team's Open Wearables instance (URL + credentials shared before the hackathon)
+
+## Pre-Workshop Setup (do this BEFORE the workshop starts)
+
+### 1. Clone the repo and configure environment
+
+```bash
+git clone https://github.com/bartmichalak/ring-roast.git
+cd ring-roast
+cp .env.example .env
+```
+
+Edit `.env` and fill in your credentials:
+
+```
+OPEN_WEARABLES_API_KEY=your_key_from_ow_dashboard
+OPEN_WEARABLES_API_URL=https://your-team-instance.up.railway.app
+OPENAI_API_KEY=your_openai_key
+```
+
+### 2. Start the app
+
+```bash
+docker compose up
+```
+
+The app will be available at **http://localhost:3100**. First build takes a few minutes.
+
+### 3. Verify it works
+
+Open http://localhost:3100 — you should see the Ring Roast landing page with a disabled "Connect Your Wearable" button.
 
 ## Open Wearables
 
-Each team will work with their own Open Wearables instance hosted on Railway. All instances will be provisioned a few days before the hackathon. Access details (URLs, credentials) will be shared via Slack.
+Each team has their own Open Wearables instance hosted on Railway, provisioned before the hackathon. Log into your instance, explore the dashboard, and grab your API key from the settings tab.
+
+**No wearable data?** Use the **seed data generator** in the OW dashboard to populate sample health data.
 
 ## Starter App
 
-This repo serves as the starting point - a ready-to-run app that participants clone and build on top of during the workshop.
-
-> **TODO:** Clean up `main` branch - the features built during the workshop are currently already implemented here. They need to be moved to separate branches so that `main` contains only the bare starter base.
+This repo (`workshop-base` branch) is the starting point — a ready-to-run app that participants build on during the workshop.
 
 ### What's included out of the box
 
-- **Docker Compose dev setup** - `cp .env.example .env && docker compose up` and you're running. No Ruby, no local dependencies.
-- **Anonymous users** - each unique visitor automatically gets a user with a randomly generated Kahoot-style name (e.g. "FunkyPanda47"). Tracked via session cookie, no login required.
-- **Vanilla fullstack Rails** - Rails 8, Hotwire (Turbo + Stimulus), Tailwind CSS, SQLite. Robust but lightweight - no Node.js, no external database, no complex infrastructure. Everything runs in a single container.
+- **Docker Compose dev setup** — `cp .env.example .env && docker compose up` and you're running. No Ruby, no local dependencies.
+- **Anonymous users** — each visitor automatically gets a user with a randomly generated Kahoot-style name (e.g. "FunkyPanda47"). Tracked via session cookie, no login required.
+- **Vanilla fullstack Rails** — Rails 8, Hotwire (Turbo + Stimulus), Tailwind CSS, SQLite. Everything runs in a single container.
 
-### What participants will build
+### Running commands
 
-The workshop is split into a few blocks, each adding a new integration on top of the starter:
+Since the dev environment runs in Docker, prefix all Rails commands:
 
-1. **Connect Wearables** - integrate with the Open Wearables API to let users connect their devices via OAuth
-2. **Workout Roast** - pull workout data from the Open Wearables API and display it
-3. **OpenAI Roast** - use OpenAI to generate AI-powered roasts based on the workout data
-4. **Sleep Roast** - pull sleep data from the Open Wearables API and roast users on their sleep habits
-5. **Sleep Scores deep dive** - discussion on how sleep scores work under the hood - implementation details, design decisions, and comparison with provider-native scores (Whoop, Oura, Garmin, etc.)
+```bash
+docker compose exec web bin/rails test          # Run tests
+docker compose exec web bin/rails db:migrate    # Run migrations
+docker compose exec web bundle install          # Install gems
+```
+
+## API Reference
+
+See [`ow-integration-reference.md`](./ow-integration-reference.md) for Open Wearables documentation status and known gaps.
