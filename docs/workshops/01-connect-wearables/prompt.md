@@ -1,6 +1,10 @@
 # Workshop Prompt: Connect Wearables Feature
 
-Build the "Connect Your Wearable" feature for Ring Roast, using the Open Wearables integration from the previous step.
+Integrate this project with [Open Wearables](https://openwearables.io/docs/dev-guides/backend-e2e-integration) — a unified API for connecting wearable devices and accessing health data. Then build the "Connect Your Wearable" feature for Ring Roast.
+
+### API client service
+
+Create a reusable client with methods for: create user, list providers, get authorize URL, get connections. Read credentials from ENV vars. Authenticate via `X-Open-Wearables-API-Key` header (NOT Bearer). Raise custom errors on non-2xx; catch in controllers, show flash messages.
 
 ### Anonymous users
 
@@ -20,7 +24,7 @@ Add flash message rendering (success and error) to `application.html.erb` layout
 
 ### Provider selection page
 
-Create a page at `/connections` showing available wearable providers in a card grid. Fetch the list from the Open Wearables API. Each card shows the provider's icon and name, and links to start the OAuth flow for that provider.
+Create a page at `/connections` showing available wearable providers in a card grid. Fetch the list from the API. Use `provider` field in URLs, `name` for display, `icon_url` for images (prepend API base URL). Each card links to start the OAuth flow.
 
 ### OAuth connect flow
 
@@ -37,4 +41,4 @@ Write tests for the User model, the API client service, and the connections cont
 
 ### Verify
 
-Run tests, then test the full flow in the browser: landing page with greeting → connect wearable → OAuth → redirect back with success flash → connected provider badge on home page.
+Run tests. Then restart the app (`docker compose restart web` — needed for Rails to pick up the new `app/services/` directory) and test the full flow in the browser: landing page with greeting → connect wearable → OAuth → redirect back with success flash → connected provider badge on home page.
