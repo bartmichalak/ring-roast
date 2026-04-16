@@ -8,16 +8,18 @@ Add the OpenAI client library for this project's language. The API key is availa
 
 ## Roast generator
 
-Create a service that takes the computed workout stats and returns a funny roast string for each card (`summary`, `most_common_type`, `longest_workout`, `totals`).
+Create a service that takes the computed workout stats and returns a roast string for each card.
 
-Use `gpt-4o-mini` with temperature 0.9. Send a system prompt setting the tone ("savage but funny fitness roast comedian", 1-2 sentences max, punchy, brutal but not mean) and a user prompt with the actual stats. Request the response as JSON with exactly those 4 keys.
+Use `gpt-4o-mini` with temperature 0.9. Send two messages:
+- **System**: "You are a savage but funny fitness roast comedian. Roasts are 1-2 sentences max, punchy, brutal but not mean. Respond in valid JSON only with exactly these keys: summary, most_common_type, longest_workout, totals."
+- **User**: Include the actual stats (workout count, duration, favorite type, longest session, calories, distance, heart rate) and ask for 4 roasts matching those keys.
 
-If the API fails or returns invalid JSON, return empty results — never crash. Cards should still display stats without roast text.
+Parse the JSON response. When the API fails or returns invalid JSON, log the error and return empty results — never raise. Cards display stats with or without roast text.
 
 ## Wire it in
 
-After computing stats, call the roast generator and pass results to the view. Each card shows the roast quote above the stats.
+After computing stats in the controller, call the roast generator and pass results to the view. Each card shows the roast as a large quote above the stats.
 
 ## Verify
 
-Run tests (mock the AI client — no real API calls in tests), then test the full flow in a browser.
+Run tests (inject a fake client — no real API calls in tests), then test the full flow in a browser. Each card should now show a roast quote.

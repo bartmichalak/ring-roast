@@ -4,42 +4,47 @@ Integrate this project with [Open Wearables](https://openwearables.io) — a uni
 
 ## Documentation
 
-Read these before implementing:
-- **Integration guide** (full flow, code examples, response formats): https://openwearables.io/docs/dev-guides/backend-e2e-integration
-- **API reference** (all endpoints): https://openwearables.io/docs/api-reference/introduction
+Read the integration guide first — it has the complete flow, endpoint URLs, response formats, and code examples:
+https://openwearables.io/docs/dev-guides/backend-e2e-integration
+
+API reference (endpoint table): https://openwearables.io/docs/api-reference/introduction
 
 ## What to build
 
-### 1. API client
+### 1. API client service
 
-Create a reusable service for the Open Wearables REST API. Environment variables `OPEN_WEARABLES_API_URL` and `OPEN_WEARABLES_API_KEY` are already configured in `.env`.
+Create a reusable API client with these methods:
+- `create_user(external_user_id:)` — `POST /api/v1/users`, returns user object with `id` (UUID)
+- `get_providers(...)` — `GET /api/v1/oauth/providers`, returns array of provider objects
+- `authorize_provider(provider:, user_id:, redirect_uri:)` — `GET /api/v1/oauth/{provider}/authorize`, returns `authorization_url`
+- `get_connections(user_id:)` — `GET /api/v1/users/{user_id}/connections`, returns array of connections
 
-All requests authenticate via the `X-Open-Wearables-API-Key` header (NOT Bearer token). See the integration guide for details and code examples.
+Read `OPEN_WEARABLES_API_URL` and `OPEN_WEARABLES_API_KEY` from environment variables (already in `.env`). Authenticate every request with the `X-Open-Wearables-API-Key` header (NOT Bearer token).
+
+When a call returns non-2xx, raise a custom error with status and body. Catch these errors in controllers — show flash messages, log the error, never crash.
 
 ### 2. User linking
 
-When a user connects their first wearable, register them in Open Wearables via `POST /api/v1/users` and store the returned UUID. Use a unique identifier from your app as `external_user_id`.
+When a user first connects a wearable, register them via `POST /api/v1/users` using a unique app identifier as `external_user_id`. Store the returned `id` (UUID) on the user record. Skip if already linked.
 
-### 3. Provider selection
+### 3. Provider selection page
 
-Build a page where users choose which wearable to connect. Fetch available providers from `GET /api/v1/oauth/providers?enabled_only=true&cloud_only=true`.
+Create a page listing available providers fetched from `GET /api/v1/oauth/providers?enabled_only=true&cloud_only=true`.
+
+Each provider object has: `provider` (identifier for API calls, e.g. `"garmin"`), `name` (display label, e.g. `"Garmin"`), `icon_url` (relative path — prepend `OPEN_WEARABLES_API_URL` to render). Use `provider` in OAuth URLs, `name` for display.
 
 ### 4. OAuth connect flow
 
-Follow the integration guide's OAuth flow:
-1. Get the authorization URL from `GET /api/v1/oauth/{provider}/authorize` with `user_id` and `redirect_uri`
-2. Redirect the user to the `authorization_url` from the response
-3. Handle the callback — verify the connection via `GET /api/v1/users/{user_id}/connections`
-4. Show success/error feedback
+When a user clicks a provider:
+1. Register the user with OW if not yet linked
+2. Get the authorization URL from `GET /api/v1/oauth/{provider}/authorize` with the OW user ID and a callback URL as `redirect_uri`
+3. Redirect to the returned `authorization_url`
+4. On callback: verify connection via `GET /api/v1/users/{user_id}/connections`, redirect home with success/error flash
 
-### 5. Connection status
+### 5. Connection status on home page
 
-Show which providers the user has connected (e.g. on the home page).
-
-### 6. Error handling
-
-All API errors should result in user-friendly messages, never unhandled exceptions.
+Load the user's connections in the **controller** (not in the view) and pass them to the view. Display connected providers as badges.
 
 ## Verify
 
-Run tests, then test the full OAuth connect flow in a browser.
+Run tests, then test in browser: connect button → provider selection → OAuth → callback → success flash + provider badge on home page.

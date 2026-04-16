@@ -12,15 +12,15 @@ Users should be created automatically on first visit and tracked via session coo
 
 The existing landing page has a disabled "Connect Your Wearable" placeholder button. Update it to:
 
-- Show a welcome greeting with the user's generated name (e.g. "Welcome, FunkyPanda47")
-- Make the connect button actually work — it should link to the provider selection page
-- If the user already connected a wearable, show which providers they're connected to
+- Show a welcome greeting with the user's generated name above the hero (e.g. "Welcome, FunkyPanda47")
+- Make the connect button an active link to `/connections`
+- When the user has connected providers, show them as green badges below the button. Load connections in the **controller** and pass to the view.
 
-Also add flash message support (success/error) to the application layout.
+Add flash message rendering (success and error) to `application.html.erb` layout — not individual views — so flashes work on every page.
 
 ### Provider selection page
 
-Create a new page at `/connections` that shows available wearable providers in a card grid. Fetch the provider list from the Open Wearables API (`GET /api/v1/oauth/providers?enabled_only=true&cloud_only=true`). Each card should show the provider's icon and name, and link to start the OAuth flow.
+Create a page at `/connections` showing available wearable providers in a card grid. Fetch the list from the Open Wearables API. Each card shows the provider's icon and name, and links to start the OAuth flow for that provider.
 
 ### OAuth connect flow
 
@@ -37,4 +37,4 @@ Write tests for the User model, the API client service, and the connections cont
 
 ### Verify
 
-Run tests, then start the app and test the full flow in the browser: landing page → connect wearable → OAuth → redirect back with success message → connected providers shown on home page.
+Run tests, then test the full flow in the browser: landing page with greeting → connect wearable → OAuth → redirect back with success flash → connected provider badge on home page.
