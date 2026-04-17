@@ -36,24 +36,21 @@ This app is a reference implementation showing three core integration patterns:
 ## Common Commands
 
 ```bash
-# Setup & run (with Docker - no Ruby needed)
+# Setup & run (Docker - no Ruby needed, recommended for workshop)
 cp .env.example .env                 # Then fill in your API keys
-docker compose up                    # Build & start dev server (port 3000)
+docker compose up                    # Build & start dev server (port 3100)
 
-# Setup & run (local Ruby)
+# Running commands inside Docker container
+docker compose exec web bin/rails test                              # Run all tests
+docker compose exec web bin/rails test test/models/foo_test.rb      # Single test file
+docker compose exec web bin/rails test test/models/foo_test.rb:42   # Single test by line
+docker compose exec web bin/rails db:migrate                        # Run pending migrations
+docker compose exec web bundle install                              # Install new gems
+
+# Setup & run (local Ruby - alternative if Ruby 3.3.1 is installed)
 ./bin/setup                          # Install deps, create DBs, start server
 ./bin/dev                            # Start dev server (port 3000)
 bin/jobs                             # Start background job processor
-
-# Database
-bin/rails db:prepare                 # Create or migrate
-bin/rails db:migrate                 # Run pending migrations
-
-# Testing
-bin/rails test                       # Run all tests (parallel by default)
-bin/rails test test/models/foo_test.rb          # Single test file
-bin/rails test test/models/foo_test.rb:42       # Single test by line number
-bin/rails test:system                # System tests (Capybara + headless Chrome)
 
 # Code quality
 bin/rubocop                          # Lint (rubocop-rails-omakase style)
@@ -65,12 +62,15 @@ bin/brakeman                         # Security scan
 
 - **Service objects for business logic**: Controllers should only handle calling services and rendering responses. All business logic belongs in service objects (`app/services/`).
 - **Services must have tests**: Every service must be covered by tests (`test/services/`).
+- **Testing without Mocha**: This project uses plain Minitest without Mocha. Use `define_singleton_method` for stubbing in tests. Do not use `any_instance.stubs` or `require "minitest/mock"` (not available).
+- **Open Wearables API**: Docs at https://openwearables.io/docs/dev-guides/backend-e2e-integration. Auth: `X-Open-Wearables-API-Key` header (NOT Bearer). Credentials from ENV vars: `OPEN_WEARABLES_API_KEY`, `OPEN_WEARABLES_API_URL`.
 
 ## Architecture Notes
 
 - **Multiple SQLite databases in production**: Primary, cache (Solid Cache), queue (Solid Queue), and cable (Solid Cable) each have their own `.sqlite3` file in `storage/`.
 - **JS via ImportMap**: All JavaScript imports are configured in `config/importmap.rb`. No npm/yarn. Stimulus controllers auto-load from `app/javascript/controllers/`.
 - **Browser restriction**: `ApplicationController` enforces `allow_browser versions: :modern` (requires CSS nesting, import maps, etc.).
-- **Tailwind CSS**: Styling uses Tailwind via `tailwindcss-rails`. Run `bin/dev` (not `rails s`) to start the Tailwind watcher alongside the server.
+- **Tailwind CSS**: Styling uses Tailwind via `tailwindcss-rails`. The Tailwind watcher runs automatically with `docker compose up` or `bin/dev`.
+- **Docker dev environment**: Docker Compose maps port **3100** on host to 3000 in container. Access the app at `http://localhost:3100`. Source code is volume-mounted so file changes are reflected immediately.
 - **Secrets via ENV variables**: API keys are configured through environment variables (`OPEN_WEARABLES_API_KEY`, `OPEN_WEARABLES_API_URL`, `OPENAI_API_KEY`). Copy `.env.example` to `.env` and fill in your values. Docker Compose loads `.env` automatically.
 - **Kamal deploy config** (`config/deploy.yml`) is a template - needs server IPs and registry credentials before use.
