@@ -23,6 +23,17 @@
   </head>
 
   <body class="bg-zinc-950 text-zinc-100 min-h-screen">
+    <% if flash.any? %>
+      <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-full max-w-md px-4">
+        <% flash.each do |type, message| %>
+          <% styles = type.to_s == "notice" ? "bg-green-900/70 border-green-600 text-green-100" : "bg-red-900/70 border-red-600 text-red-100" %>
+          <div class="border <%= styles %> rounded-lg px-4 py-3 text-sm shadow-lg backdrop-blur">
+            <%= message %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <main class="container mx-auto mt-28 px-5">
       <%= yield %>
     </main>
