@@ -30,15 +30,7 @@ Create a page at `/connections` showing available wearable providers in a card g
 
 When a user clicks a provider:
 
-1. Create an Open Wearables user if they don't have one yet (`POST /api/v1/users` with `external_user_id`)
+1. Create an Open Wearables user if they don't have one yet (`POST /api/v1/users`.
 2. Get the OAuth authorization URL (`GET /api/v1/oauth/{provider}/authorize` with `user_id` and `redirect_uri`)
 3. Redirect the user to the provider's OAuth page
 4. Handle the callback — verify the connection was established and redirect home with a success/error flash
-
-### Tests
-
-Write tests for the User model, the API client service, and the connections controller.
-
-### Verify
-
-Run tests. Then restart the app (`docker compose restart web` — needed for Rails to pick up the new `app/services/` directory) and test the full flow in the browser: landing page with greeting → connect wearable → OAuth → redirect back with success flash → connected provider badge on home page.
