@@ -24,7 +24,7 @@ Add flash message rendering (success and error) to `application.html.erb` layout
 
 ### Provider selection page
 
-Create a page at `/connections` showing available wearable providers in a card grid. Fetch the list from the API. Use `provider` field in URLs, `name` for display, `icon_url` for images (prepend API base URL). Each card links to start the OAuth flow.
+Create a page at `/connections` showing available wearable providers in a card grid. Fetch the list from the API, filtering out non-cloud providers (SDK-only integrations like Apple Health, Samsung Health, Google Health Connect). Use `provider` field in URLs, `name` for display, `icon_url` for images (prepend API base URL). Each card links to start the OAuth flow.
 
 ### OAuth connect flow
 
