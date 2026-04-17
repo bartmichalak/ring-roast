@@ -1,0 +1,28 @@
+<div class="max-w-4xl mx-auto px-6">
+  <div class="mb-8">
+    <%= link_to root_path, class: "text-zinc-400 hover:text-zinc-200 text-sm" do %>
+      &larr; Back
+    <% end %>
+  </div>
+
+  <h1 class="text-4xl sm:text-5xl font-black text-white mb-3">Choose your wearable</h1>
+  <p class="text-zinc-400 text-lg mb-10">Pick a provider and we'll start the connection.</p>
+
+  <% if @providers.blank? %>
+    <p class="text-zinc-500">No cloud providers are available right now.</p>
+  <% else %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <% @providers.each do |provider| %>
+        <%= button_to connection_path(provider: provider["provider"]),
+                      method: :post,
+                      form: { data: { turbo: false } },
+                      class: "flex flex-col items-center justify-center gap-3 p-6 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-orange-500/60 rounded-xl transition-colors" do %>
+          <% if provider["icon_url"].present? %>
+            <img src="<%= provider["icon_url"] %>" alt="<%= provider["name"] %>" class="w-14 h-14">
+          <% end %>
+          <span class="text-zinc-100 font-semibold"><%= provider["name"] %></span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

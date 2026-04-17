@@ -1,0 +1,71 @@
+<% cards = @stats.cards %>
+<% colors = %w[#FF6B35 #FF2D87 #7B2FF7 #00C9A7 #1A8FE3 #F7B801 #EE4266].shuffle %>
+
+<div class="fixed inset-0 w-screen h-screen overflow-hidden"
+     data-controller="roast"
+     data-roast-total-value="<%= cards.size %>">
+
+  <%= link_to root_path,
+        class: "absolute top-4 right-4 z-30 w-11 h-11 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/30 text-white text-2xl leading-none backdrop-blur transition-colors",
+        aria: { label: "Close" },
+        data: { action: "click->roast#close" } do %>
+    <span aria-hidden="true">×</span>
+  <% end %>
+
+  <% if cards.empty? %>
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
+         style="background-color: <%= colors.first %>">
+      <h1 class="text-6xl sm:text-8xl font-black tracking-tight mb-6">No Workouts Yet</h1>
+      <p class="text-xl sm:text-2xl text-white/80 max-w-xl">
+        Your wearable is connected but we haven't seen any workouts in the last 30 days. Go move a little, then come back.
+      </p>
+      <%= link_to "Back home", root_path,
+            class: "mt-10 inline-flex items-center gap-2 bg-white text-black font-bold text-lg px-8 py-4 rounded-full hover:bg-white/90 transition-colors" %>
+    </div>
+  <% else %>
+    <% cards.each_with_index do |card, i| %>
+      <section class="absolute inset-0 flex flex-col items-center justify-center text-center px-8 transition-opacity duration-500"
+               data-roast-target="card"
+               data-index="<%= i %>"
+               style="background-color: <%= colors[i % colors.size] %>; opacity: <%= i.zero? ? 1 : 0 %>; pointer-events: <%= i.zero? ? "auto" : "none" %>">
+        <p class="uppercase tracking-[0.3em] text-white/70 text-sm sm:text-base mb-6 font-semibold">
+          <%= card[:headline] %>
+        </p>
+        <h2 class="font-black tracking-tight leading-none text-white <%= card[:value].to_s.length > 12 ? "text-6xl sm:text-7xl md:text-8xl" : "text-7xl sm:text-8xl md:text-9xl" %>">
+          <%= card[:value] %>
+        </h2>
+        <% if card[:unit].present? %>
+          <p class="text-3xl sm:text-4xl font-bold text-white/90 mt-4"><%= card[:unit] %></p>
+        <% end %>
+        <% if card[:detail].present? %>
+          <p class="text-lg sm:text-xl text-white/85 mt-8 max-w-xl"><%= card[:detail] %></p>
+        <% end %>
+      </section>
+    <% end %>
+
+    <div class="absolute top-4 left-0 right-0 z-20 flex justify-center gap-2 pointer-events-none">
+      <% cards.each_with_index do |_, i| %>
+        <span class="w-10 sm:w-16 h-1 rounded-full bg-white/30 overflow-hidden"
+              data-roast-target="dot"
+              data-index="<%= i %>">
+          <span class="block h-full rounded-full bg-white transition-all duration-300"
+                style="width: <%= i.zero? ? "100%" : "0%" %>"
+                data-roast-target="dotFill"></span>
+        </span>
+      <% end %>
+    </div>
+
+    <button type="button"
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white text-2xl flex items-center justify-center backdrop-blur transition-colors disabled:opacity-30"
+            aria-label="Previous"
+            data-action="click->roast#prev">
+      ‹
+    </button>
+    <button type="button"
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 text-white text-2xl flex items-center justify-center backdrop-blur transition-colors disabled:opacity-30"
+            aria-label="Next"
+            data-action="click->roast#next">
+      ›
+    </button>
+  <% end %>
+</div>
