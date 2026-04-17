@@ -33,6 +33,15 @@ module OpenWearables
       get("/api/v1/users/#{user_id}/connections")
     end
 
+    def get_workouts(user_id:, start_date: nil, end_date: nil, cursor: nil, limit: nil)
+      params = {}
+      params[:start_date] = start_date.to_s if start_date
+      params[:end_date] = end_date.to_s if end_date
+      params[:cursor] = cursor if cursor
+      params[:limit] = limit if limit
+      get("/api/v1/users/#{user_id}/events/workouts", params)
+    end
+
     private
 
     def get(path, params = {})

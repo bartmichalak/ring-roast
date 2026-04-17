@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   get  "connections"           => "connections#index",    as: :connections
   get  "connections/callback"  => "connections#callback", as: :connections_callback
   post "connections/:provider" => "connections#create",   as: :connection
+
+  get  "roast"                 => "roast#show",           as: :roast
 end

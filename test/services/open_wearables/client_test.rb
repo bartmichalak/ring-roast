@@ -61,6 +61,34 @@ module OpenWearables
       assert_equal "https://app.example/cb", query["redirect_uri"]
     end
 
+    test "get_workouts GETs events/workouts with date range and cursor" do
+      captured = stub_net_http(status: "200", body: { data: [], pagination: { has_more: false } }.to_json)
+
+      OpenWearables::Client.new.get_workouts(
+        user_id: "u-1",
+        start_date: "2026-03-18",
+        end_date: "2026-04-17",
+        cursor: "abc",
+        limit: 100
+      )
+
+      assert_equal "/api/v1/users/u-1/events/workouts", captured[:uri].path
+      query = URI.decode_www_form(captured[:uri].query).to_h
+      assert_equal "2026-03-18", query["start_date"]
+      assert_equal "2026-04-17", query["end_date"]
+      assert_equal "abc", query["cursor"]
+      assert_equal "100", query["limit"]
+    end
+
+    test "get_workouts omits nil params" do
+      captured = stub_net_http(status: "200", body: { data: [], pagination: { has_more: false } }.to_json)
+
+      OpenWearables::Client.new.get_workouts(user_id: "u-1")
+
+      assert_equal "/api/v1/users/u-1/events/workouts", captured[:uri].path
+      assert_nil captured[:uri].query
+    end
+
     test "raises Error with status on non-2xx response" do
       stub_net_http(status: "500", body: "oops")
 
