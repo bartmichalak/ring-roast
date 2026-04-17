@@ -1,0 +1,9 @@
+anonymous:
+  name: FunkyPanda42
+  session_token: session-token-anonymous
+  ow_user_id:
+
+connected:
+  name: ChaoticSloth99
+  session_token: session-token-connected
+  ow_user_id: ow-user-123

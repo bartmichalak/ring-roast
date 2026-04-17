@@ -10,4 +10,8 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   root "pages#home"
+
+  get "connections" => "connections#index", as: :connections
+  post "connections/:provider" => "connections#create", as: :connect_provider
+  get "connections/callback" => "connections#callback", as: :connections_callback
 end
