@@ -8,9 +8,9 @@ Create a reusable client with methods for: create user, list providers, get auth
 
 ### Anonymous users
 
-The app doesn't require login. Instead, create a User model with auto-generated Kahoot-style funny names (e.g. "FunkyPanda47", "ChaoticSloth12") — combine a random adjective + animal + number. Use a big enough word list (~40 each) for variety.
+The app doesn't require login. A `User` model already exists (`app/models/user.rb`) with auto-generated Kahoot-style funny names (e.g. "FunkyPanda47", "ChaoticSloth12"), and a `CurrentUser` concern creates users on first visit and tracks them via session cookie.
 
-Users should be created automatically on first visit and tracked via session cookie. Store an `ow_user_id` field on the user (nullable) — this links them to their Open Wearables account.
+Add an `ow_user_id` field to the `users` table (nullable) — this links a local user to their Open Wearables account. Users don't have an email address.
 
 ### Landing page updates
 
