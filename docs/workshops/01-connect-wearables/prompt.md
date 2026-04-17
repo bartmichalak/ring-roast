@@ -34,3 +34,5 @@ When a user clicks a provider:
 2. Get the OAuth authorization URL (`GET /api/v1/oauth/{provider}/authorize` with `user_id` and `redirect_uri`)
 3. Redirect the user to the provider's OAuth page
 4. Handle the callback — verify the connection was established and redirect home with a success/error flash
+
+**Heads up — Turbo + cross-origin redirect:** the provider trigger must be a plain browser navigation, not a Turbo-intercepted fetch. If you use `button_to` (or any Turbo-enabled form) to POST to your backend and then `redirect_to authorization_url, allow_other_host: true`, Turbo follows the 302 inside `fetch()`. The cross-origin hop to the provider becomes a CORS request, the browser sends an `OPTIONS` preflight to e.g. `cloud.ouraring.com`, and the provider rejects it. Disable Turbo on that form (e.g. `form: { data: { turbo: false } }` on `button_to`) so the browser does a native navigation and follows the 302 normally.
