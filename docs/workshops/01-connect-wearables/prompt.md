@@ -30,7 +30,7 @@ Create a page at `/connections` showing available wearable providers in a card g
 
 When a user clicks a provider:
 
-1. Create an Open Wearables user if they don't have one yet (`POST /api/v1/users`.
+1. Create an Open Wearables user if they don't have one yet (`POST /api/v1/users`). Pass the local user's generated name (e.g. "FunkyPanda47") as `first_name` so they're identifiable in the Open Wearables dashboard - we don't have emails or split first/last names.
 2. Get the OAuth authorization URL (`GET /api/v1/oauth/{provider}/authorize` with `user_id` and `redirect_uri`)
 3. Redirect the user to the provider's OAuth page
 4. Handle the callback — verify the connection was established and redirect home with a success/error flash
