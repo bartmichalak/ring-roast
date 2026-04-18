@@ -1,0 +1,45 @@
+<div class="max-w-5xl mx-auto">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-white mb-3">
+      Connect Your Wearable
+    </h1>
+    <p class="text-zinc-400 text-base sm:text-lg">
+      Pick your provider to start syncing health data.
+    </p>
+  </div>
+
+  <% if @providers.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @providers.each do |provider| %>
+        <%= button_to connect_provider_path(provider: provider["provider"]),
+              method: :post,
+              form: { data: { turbo: false } },
+              class: "group flex items-center gap-4 p-6 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-orange-500/40 rounded-2xl transition-colors text-left w-full" do %>
+          <% if provider["icon_url"].present? %>
+            <img
+              src="<%= provider["icon_url"] %>"
+              alt="<%= provider["name"] %> logo"
+              class="h-12 w-12 rounded-lg bg-white/5 p-1 flex-shrink-0"
+            />
+          <% end %>
+          <div class="flex-1 min-w-0">
+            <div class="text-white font-semibold text-lg truncate">
+              <%= provider["name"] %>
+            </div>
+            <div class="text-zinc-500 text-sm group-hover:text-orange-300 transition-colors">
+              Connect &rarr;
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center text-zinc-500 py-20">
+      No cloud providers are currently available.
+    </div>
+  <% end %>
+
+  <div class="mt-12 text-center">
+    <%= link_to "Back home", root_path, class: "text-zinc-400 hover:text-orange-300 text-sm" %>
+  </div>
+</div>
