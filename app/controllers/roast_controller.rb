@@ -15,6 +15,7 @@ class RoastController < ApplicationController
 
     workouts = WorkoutsFetcher.new(user_id: current_user.ow_user_id, client: client).call
     @stats = WorkoutStats.new(workouts)
+    @roasts = RoastGenerator.new(@stats).call
   rescue OpenWearables::Error => e
     redirect_to root_path, alert: "Couldn't load your workouts: #{e.message}"
   end

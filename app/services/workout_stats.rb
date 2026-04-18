@@ -13,6 +13,28 @@ class WorkoutStats
     [ summary_card, top_type_card, longest_session_card, totals_card ]
   end
 
+  def metrics
+    return {} if @workouts.empty?
+
+    durations = compact_values("duration_seconds")
+    longest = @workouts.reject { |w| w["duration_seconds"].blank? }.max_by { |w| w["duration_seconds"] }
+    type_counts = @workouts.each_with_object(Hash.new(0)) { |w, h| h[w["type"]] += 1 if w["type"].present? }
+    top_type, top_type_count = type_counts.max_by { |_, c| c } || [ nil, 0 ]
+    hrs = compact_values("avg_heart_rate_bpm")
+
+    {
+      workout_count: @workouts.size,
+      total_duration_seconds: durations.sum,
+      favorite_type: top_type ? humanize_type(top_type) : nil,
+      favorite_type_count: top_type_count,
+      longest_duration_seconds: longest ? longest["duration_seconds"].to_i : nil,
+      longest_name: longest ? (longest["name"].presence || humanize_type(longest["type"])) : nil,
+      total_calories_kcal: compact_values("calories_kcal").sum.round,
+      total_distance_meters: compact_values("distance_meters").sum.round,
+      avg_heart_rate_bpm: hrs.any? ? (hrs.sum.to_f / hrs.size).round : nil
+    }
+  end
+
   private
 
   def summary_card

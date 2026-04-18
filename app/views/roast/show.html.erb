@@ -1,5 +1,7 @@
 <% cards = @stats.cards %>
 <% colors = %w[#FF6B35 #FF2D87 #7B2FF7 #00C9A7 #1A8FE3 #F7B801 #EE4266].shuffle %>
+<% roasts = @roasts || {} %>
+<% roast_key_for = { summary: :summary, top_type: :most_common_type, longest: :longest_workout, totals: :totals } %>
 
 <div class="fixed inset-0 w-screen h-screen overflow-hidden"
      data-controller="roast"
@@ -28,6 +30,12 @@
                data-roast-target="card"
                data-index="<%= i %>"
                style="background-color: <%= colors[i % colors.size] %>; opacity: <%= i.zero? ? 1 : 0 %>; pointer-events: <%= i.zero? ? "auto" : "none" %>">
+        <% roast = roasts[roast_key_for[card[:kind]]] %>
+        <% if roast.present? %>
+          <blockquote class="text-white text-2xl sm:text-3xl md:text-4xl font-bold italic leading-snug max-w-2xl mb-10 before:content-['“'] after:content-['”']">
+            <%= roast %>
+          </blockquote>
+        <% end %>
         <p class="uppercase tracking-[0.3em] text-white/70 text-sm sm:text-base mb-6 font-semibold">
           <%= card[:headline] %>
         </p>
