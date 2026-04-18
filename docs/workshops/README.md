@@ -8,7 +8,15 @@
 
 ## Pre-Workshop Setup (do this BEFORE the workshop starts)
 
-### 1. Clone the repo and configure environment
+### 1. Get your Open Wearables API credentials
+
+Log into your team's Open Wearables instance, then:
+
+- Go to **Settings > Credentials**
+- Copy the **API Base URL** (this is your `OPEN_WEARABLES_API_URL`)
+- Click **"Generate API key"**, add a name, and copy the value (this is your `OPEN_WEARABLES_API_KEY`)
+
+### 2. Clone the repo and configure environment
 
 ```bash
 git clone https://github.com/bartmichalak/ring-roast.git
@@ -24,7 +32,7 @@ OPEN_WEARABLES_API_URL=https://your-team-instance.up.railway.app
 OPENAI_API_KEY=your_openai_key
 ```
 
-### 2. Start the app
+### 3. Start the app
 
 ```bash
 docker compose up
@@ -32,7 +40,7 @@ docker compose up
 
 The app will be available at **http://localhost:3100**. First build takes a few minutes.
 
-### 3. Verify it works
+### 4. Verify it works
 
 Open http://localhost:3100 — you should see the Ring Roast landing page with a disabled "Connect Your Wearable" button.
 
