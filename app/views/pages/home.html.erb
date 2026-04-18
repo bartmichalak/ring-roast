@@ -1,8 +1,18 @@
 <div class="min-h-screen flex flex-col items-center justify-center text-center px-6 -mt-28">
   <!-- Hero -->
   <div class="max-w-2xl">
-    <p class="text-zinc-400 text-sm sm:text-base mb-4">
+    <p class="text-zinc-400 text-sm sm:text-base mb-4 inline-flex items-center gap-2">
       Hey, <span class="text-orange-300 font-semibold"><%= current_user.name %></span>
+      <%= button_to session_path,
+            method: :delete,
+            title: "Generate a new account",
+            aria: { label: "Generate a new account" },
+            class: "inline-flex items-center justify-center w-6 h-6 rounded-full text-zinc-400 hover:text-orange-300 hover:bg-zinc-800 transition-colors",
+            form: { class: "inline" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      <% end %>
     </p>
 
     <h1 class="text-6xl sm:text-7xl font-black tracking-tight text-white mb-2">
